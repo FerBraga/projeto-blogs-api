@@ -35,7 +35,7 @@ app.post('/login', authLogin, async (req, res) => {
 app.post('/user', 
 authLogin, 
 authUserEmail,
-authToken, 
+// authToken, 
 authUserPassword, async (req, res) => {
   const { email, password, displayName, image } = req.body;
   const user = await User.findOne({ where: { email, password } });
