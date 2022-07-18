@@ -51,6 +51,25 @@ authUserPassword, async (req, res) => {
     return res.status(201).json({ token });
 });
 
+app.get('/user/:id', authToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const user = await User.findByPk(id);
+    // console.log(user, 'findbypk user');
+    const userFound = {
+        id: user.dataValues.id,
+        displayName: user.dataValues.displayName,
+        email: user.dataValues.email,
+        image: user.dataValues.image,
+      };
+      console.log('userFound', userFound);
+    return res.status(200).json(userFound);
+  } catch (err) {
+    return res.status(404).json({ message: 'User does not exist' });
+  }
+});
+
 app.get('/user', authToken, async (req, res) => {
   try {
     const users = await User.findAll();
