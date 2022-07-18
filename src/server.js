@@ -6,6 +6,7 @@ const { User } = require('./database/models');
 const authLogin = require('./helpers/authLogin');
 const authUserEmail = require('./helpers/authUser');
 const authUserPassword = require('./helpers/authUserPassword');
+const authToken = require('./helpers/authToken');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -33,7 +34,8 @@ app.post('/login', authLogin, async (req, res) => {
 
 app.post('/user', 
 authLogin, 
-authUserEmail, 
+authUserEmail,
+authToken, 
 authUserPassword, async (req, res) => {
   const { email, password, displayName, image } = req.body;
   const user = await User.findOne({ where: { email, password } });
@@ -47,6 +49,24 @@ authUserPassword, async (req, res) => {
   };
     const token = jwt.sign({ data: email }, secret, jwtConfig);
     return res.status(201).json({ token });
+});
+
+app.get('/user', authToken, async (req, res) => {
+  try {
+    const users = await User.findAll();
+    console.log('users lista', users);
+    const mapUsers = users.map((user) => (
+      {
+        id: user.dataValues.id,
+        displayName: user.dataValues.displayName,
+        email: user.dataValues.email,
+        image: user.dataValues.image,
+      }
+      ));
+    return res.status(200).json(mapUsers);
+  } catch (err) {
+    return res.status(400).json({ message: 'usuários não encontrados' });
+  }
 });
 
 app.use(errorMiddleware);
