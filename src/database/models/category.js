@@ -5,7 +5,8 @@ const Category = (sequelize, DataTypes) => {
             autoIncrement:true,
             primaryKey:true
         },
-      name: DataTypes.STRING,
+        name: DataTypes.STRING,
+        defaultValue: true
     },
     {
         timestamps: false

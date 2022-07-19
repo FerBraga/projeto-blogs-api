@@ -2,11 +2,12 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const errorMiddleware = require('./helpers/errorMiddleware');
 const app = require('./api');
-const { User } = require('./database/models');
+const { User, Category } = require('./database/models');
 const authLogin = require('./helpers/authLogin');
 const authUserEmail = require('./helpers/authUser');
 const authUserPassword = require('./helpers/authUserPassword');
 const authToken = require('./helpers/authToken');
+const categoryName = require('./helpers/categoryName');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -86,6 +87,23 @@ app.get('/user', authToken, async (req, res) => {
   } catch (err) {
     return res.status(400).json({ message: 'usuários não encontrados' });
   }
+});
+
+app.post('/categories', 
+// authLogin, 
+// authUserEmail,
+authToken,
+categoryName, async (req, res) => {
+  const { name } = req.body;
+  // console.log(name, "NAME<<<<<");
+   const newCategory = await Category.create({ name });
+  //  console.log(newCategory, 'newCategory');
+  // const jwtConfig = {
+  //   expiresIn: '7d',
+  //   algorithm: 'HS256',
+  // };
+  //   const token = jwt.sign({ data: email }, secret, jwtConfig);
+    return res.status(201).json(newCategory);
 });
 
 app.use(errorMiddleware);

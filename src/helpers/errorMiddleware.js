@@ -15,6 +15,11 @@ const errors = [
       status: 400,
       message: { message: '"password" length must be at least 6 characters long' },
     },
+    {
+      status: 400,
+      message: { message: '"name" is required' },
+    },
+
   ];
   
   const errorMiddleware = (error, _req, res, _next) => {
