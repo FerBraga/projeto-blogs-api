@@ -6,7 +6,6 @@ const Category = (sequelize, DataTypes) => {
             primaryKey:true
         },
         name: DataTypes.STRING,
-        defaultValue: true
     },
     {
         timestamps: false

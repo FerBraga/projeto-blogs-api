@@ -16,7 +16,8 @@ const secret = process.env.JWT_SECRET;
 app.get('/', (_request, response) => {
   response.send();
 });
-app.post('/login', authLogin, async (req, res) => {
+app.post('/login', 
+authLogin, async (req, res) => {
   const { email, password } = req.body;
   // console.log(email, password);
   const user = await User.findOne({ where: { email, password } });
@@ -52,7 +53,8 @@ authUserPassword, async (req, res) => {
     return res.status(201).json({ token });
 });
 
-app.get('/user/:id', authToken, async (req, res) => {
+app.get('/user/:id', 
+authToken, async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
@@ -71,7 +73,8 @@ app.get('/user/:id', authToken, async (req, res) => {
   }
 });
 
-app.get('/user', authToken, async (req, res) => {
+app.get('/user', 
+authToken, async (req, res) => {
   try {
     const users = await User.findAll();
     console.log('users lista', users);
@@ -104,6 +107,23 @@ categoryName, async (req, res) => {
   // };
   //   const token = jwt.sign({ data: email }, secret, jwtConfig);
     return res.status(201).json(newCategory);
+});
+
+app.get('/categories', 
+authToken, async (req, res) => {
+  try {
+    const categories = await Category.findAll();
+    console.log(categories, 'CATEGORIES AQUI');
+    const mapCategories = categories.map((cat) => (
+      {
+        id: cat.dataValues.id,
+      name: cat.dataValues.name,
+      }
+      ));
+    return res.status(200).json(mapCategories);
+  } catch (err) {
+    return res.status(400).json({ message: 'categorias não encontradas' });
+  }
 });
 
 app.use(errorMiddleware);
