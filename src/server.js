@@ -2,12 +2,14 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const errorMiddleware = require('./helpers/errorMiddleware');
 const app = require('./api');
-const { User, Category } = require('./database/models');
+const { User, Category, BlogPost } = require('./database/models');
 const authLogin = require('./helpers/authLogin');
 const authUserEmail = require('./helpers/authUser');
 const authUserPassword = require('./helpers/authUserPassword');
 const authToken = require('./helpers/authToken');
 const categoryName = require('./helpers/categoryName');
+const authPost = require('./helpers/authPost');
+// const PostCategory = require('./database/models/postCategory');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -125,6 +127,43 @@ authToken, async (req, res) => {
     return res.status(400).json({ message: 'categorias não encontradas' });
   }
 });
+
+app.post('/post',
+authPost,
+authToken, async (req, res, next) => {
+  try {
+    const { title, content, categoryIds } = req.body;
+
+    console.log(categoryIds, 'categoryids <<<<<<<');
+
+    const found = categoryIds.filter((catId) => Category.findByPk(catId));
+
+    console.log(found, 'found <<<<<');
+
+    if (found.length !== categoryIds.length) {
+      return next('6');
+    }
+
+   const cont = await found.map((idd) => BlogPost.create({ idd, title, content }));
+
+   console.log(cont, ' cont <<<<<<');
+
+  //  console.log(cont);
+      return res.status(201).json(cont);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get('/post', 
+authToken, async (req, res) => {
+    const posts = await BlogPost.findAll({ include:
+      [
+       { model: User, as: 'user' }, 
+       { model: Category, as: 'categories', through: { attributes: [] } },
+    ] });
+    return res.status(200).json(posts);
+  });
 
 app.use(errorMiddleware);
 

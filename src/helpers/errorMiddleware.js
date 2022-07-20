@@ -19,7 +19,14 @@ const errors = [
       status: 400,
       message: { message: '"name" is required' },
     },
-
+    {
+      status: 400,
+      message: { message: 'Some required fields are missing' },
+    },
+    {
+      status: 400,
+      message: { message: '"categoryIds" not found' },
+    },
   ];
   
   const errorMiddleware = (error, _req, res, _next) => {

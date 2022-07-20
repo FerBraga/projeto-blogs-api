@@ -3,13 +3,9 @@ const BlogPost = require("./blogPost");
 const PostCategory = (sequelize, DataTypes) => {
     const PostCategory = sequelize.define("PostCategory", 
     {
-        postId: {
-            type: DataTypes.INTEGER, foreignKey: true,
+        postId: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER, 
     },
-    categoryId:{
-        type: DataTypes.INTEGER, foreignKey: true,
-    },
-},
 
     { timestamps: false }
     );
