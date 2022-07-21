@@ -159,7 +159,7 @@ app.get('/post',
 authToken, async (req, res) => {
     const posts = await BlogPost.findAll({ include:
       [
-       { model: User, as: 'user' }, 
+       { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }, 
        { model: Category, as: 'categories', through: { attributes: [] } },
     ] });
     return res.status(200).json(posts);

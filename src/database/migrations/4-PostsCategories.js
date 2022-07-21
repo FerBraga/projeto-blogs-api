@@ -8,7 +8,6 @@ module.exports = {
         references: {
             // Informa a tabela da referência da associação
             model: 'BlogPosts',
-            // Informa a coluna da referência que é a chave correspondente
             key: 'id',
       },
     },
