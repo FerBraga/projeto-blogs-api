@@ -8,7 +8,7 @@ const authUserEmail = require('./helpers/authUser');
 const authUserPassword = require('./helpers/authUserPassword');
 const authToken = require('./helpers/authToken');
 const categoryName = require('./helpers/categoryName');
-const authPost = require('./helpers/authPost');
+// const authPost = require('./helpers/authPost');
 // const PostCategory = require('./database/models/postCategory');
 
 // não remova a variável `API_PORT` ou o `listen`
@@ -128,32 +128,32 @@ authToken, async (req, res) => {
   }
 });
 
-app.post('/post',
-authPost,
-authToken, async (req, res, next) => {
-  try {
-    const { title, content, categoryIds } = req.body;
+// app.post('/post',
+// authPost,
+// authToken, async (req, res, next) => {
+//   try {
+//     const { title, content, categoryIds } = req.body;
 
-    console.log(categoryIds, 'categoryids <<<<<<<');
+//     console.log(categoryIds, 'categoryids <<<<<<<');
 
-    const found = categoryIds.filter((catId) => Category.findByPk(catId));
+//     const found = categoryIds.filter((catId) => Category.findByPk(catId));
 
-    console.log(found, 'found <<<<<');
+//     console.log(found, 'found <<<<<');
 
-    if (found.length !== categoryIds.length) {
-      return next('6');
-    }
+//     if (found.length !== categoryIds.length) {
+//       return next('6');
+//     }
 
-   const cont = await found.map((idd) => BlogPost.create({ idd, title, content }));
+//    const cont = await found.map((idd) => BlogPost.create({ idd, title, content }));
 
-   console.log(cont, ' cont <<<<<<');
+//    console.log(cont, ' cont <<<<<<');
 
-  //  console.log(cont);
-      return res.status(201).json(cont);
-  } catch (error) {
-    console.log(error.message);
-  }
-});
+//   //  console.log(cont);
+//       return res.status(201).json(cont);
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// });
 
 app.get('/post', 
 authToken, async (req, res) => {
@@ -164,6 +164,22 @@ authToken, async (req, res) => {
     ] });
     return res.status(200).json(posts);
   });
+
+  // app.get('/post/:id', 
+  // authToken, async (req, res) => {
+  //   try {
+  //     const { id } = req.params;
+  //     console.log(id);
+  //     const post = await BlogPost.findAll({ where: { id }, 
+  //       include: [
+  //       { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }, 
+  //      { model: Category, as: 'categories', through: { attributes: [] } },
+  //     ] });
+  //     return res.status(200).json(post);
+  //   } catch (err) {
+  //     return res.status(404).json({ message: 'User does not exist' });
+  //   }
+  // });
 
 app.use(errorMiddleware);
 
