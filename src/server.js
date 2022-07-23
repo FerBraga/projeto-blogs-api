@@ -8,8 +8,6 @@ const authUserEmail = require('./helpers/authUser');
 const authUserPassword = require('./helpers/authUserPassword');
 const authToken = require('./helpers/authToken');
 const categoryName = require('./helpers/categoryName');
-// const authPost = require('./helpers/authPost');
-// const PostCategory = require('./database/models/postCategory');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -164,22 +162,6 @@ authToken, async (req, res) => {
     ] });
     return res.status(200).json(posts);
   });
-
-  // app.get('/post/:id', 
-  // authToken, async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     console.log(id);
-  //     const post = await BlogPost.findAll({ where: { id }, 
-  //       include: [
-  //       { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] }, 
-  //      { model: Category, as: 'categories', through: { attributes: [] } },
-  //     ] });
-  //     return res.status(200).json(post);
-  //   } catch (err) {
-  //     return res.status(404).json({ message: 'User does not exist' });
-  //   }
-  // });
 
 app.use(errorMiddleware);
 
